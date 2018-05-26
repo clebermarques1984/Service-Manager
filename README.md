@@ -1,0 +1,2 @@
+# CRMLite
+A simple CRM
