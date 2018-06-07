@@ -7,3 +7,5 @@
 /src/DataService/CRMLiteAppService/CRMLiteAppService/.vscode
 /src/DataService/CRMLiteAppService/CRMLiteAppService/bin/Debug/netcoreapp2.0
 /src/DataService/CRMLiteAppService/CRMLiteAppService/obj
+*.suo
+/.vs
