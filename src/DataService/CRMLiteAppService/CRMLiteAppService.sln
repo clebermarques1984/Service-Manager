@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2018
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRMLiteAppService", "CRMLiteAppService\CRMLiteAppService.csproj", "{FE764D6D-BA1C-4DF0-87D8-7B34AF513A53}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE764D6D-BA1C-4DF0-87D8-7B34AF513A53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE764D6D-BA1C-4DF0-87D8-7B34AF513A53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE764D6D-BA1C-4DF0-87D8-7B34AF513A53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE764D6D-BA1C-4DF0-87D8-7B34AF513A53}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {571A7351-AB23-41F3-AD7A-3AF1F546A190}
+	EndGlobalSection
+EndGlobal
