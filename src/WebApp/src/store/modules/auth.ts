@@ -1,6 +1,6 @@
-import { Credentials } from '../../models/credentials.interface';
-import { authService } from '../../services/auth.service';
-import { EventBus } from '../../event-bus';
+import { Credentials } from '@/models/credentials.interface';
+import { authService } from '@/services/auth.service';
+import { EventBus } from '@/event-bus';
 
 const state = { token: localStorage.getItem('auth-token') || '', status: '' };
 
@@ -59,6 +59,7 @@ const mutations = {
 };
 
 export default {
+  namespaced: true,
   state,
   getters,
   actions,

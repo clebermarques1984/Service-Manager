@@ -37,9 +37,9 @@
 </template>
 
 <script lang="ts">
-import Spinner from '@/components/Spinner.vue'; // @ is an alias to /src
 import { Component, Vue } from 'vue-property-decorator';
-import { Credentials } from '../../models/credentials.interface';
+import Spinner from '@/components/Spinner.vue'; // @ is an alias to /src
+import { Credentials } from '@/models/credentials.interface';
 
 @Component({
   components: {
@@ -47,28 +47,29 @@ import { Credentials } from '../../models/credentials.interface';
   },
 })
 export default class LoginForm extends Vue {
+  private isBusy: boolean = false;
+  private errors: string = '';
+  private credentials = {} as Credentials;
 
-private isBusy: boolean = false;
-private errors: string = '';
-private credentials = {} as Credentials;
-
-private created() {
-  if (this.$route.query.new) {
-    this.credentials.userName = this.$route.query.email;
+  private created() {
+    if (this.$route.query.new) {
+      this.credentials.userName = this.$route.query.email;
+    }
   }
-}
 
-private handleSubmit() {
-     this.isBusy = true;
-     this.$store.dispatch('auth/authRequest', this.credentials).then((result) => {
-     this.$router.push('/');
-    })
-   .catch((err) => {
-    this.errors = err;
-  })
-  .then(() => {
-    this.isBusy = false;
-  });
- }
+  private handleSubmit() {
+    this.isBusy = true;
+    this.$store
+      .dispatch('auth/authRequest', this.credentials)
+      .then(result => {
+        this.$router.push('/');
+      })
+      .catch(err => {
+        this.errors = err;
+      })
+      .then(() => {
+        this.isBusy = false;
+      });
+  }
 }
 </script>

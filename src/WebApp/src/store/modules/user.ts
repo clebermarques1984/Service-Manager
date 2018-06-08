@@ -1,5 +1,5 @@
-import { profileService } from '../../services/profile.service';
-import { EventBus } from '../../event-bus';
+import { profileService } from '@/services/profile.service';
+import { EventBus } from '@/event-bus';
 import Vue from 'vue';
 
 const state = { profile: {}, status: '' };
@@ -37,6 +37,7 @@ const mutations = {
 };
 
 export default {
+  namespaced: true,
   state,
   getters,
   actions,
