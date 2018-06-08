@@ -55,7 +55,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Spinner from '@/components/Spinner.vue'; // @ is an alias to /src
-import { UserRegistration } from '@/models/user.registration.interface';
+import { IUserRegistration } from '@/models/user.registration.interface';
 import { accountService } from '@/services/account.service';
 
 @Component({
@@ -66,7 +66,7 @@ import { accountService } from '@/services/account.service';
 export default class RegistrationForm extends Vue {
   private isBusy: boolean = false;
   private errors: string = '';
-  private user = {} as UserRegistration;
+  private user = {} as IUserRegistration;
 
   private handleSubmit() {
     this.isBusy = true;

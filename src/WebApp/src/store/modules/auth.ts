@@ -1,20 +1,25 @@
-import { Credentials } from '@/models/credentials.interface';
+import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
+import { IAuthState, IRootState } from '../types';
+import { ICredentials } from '@/models/credentials.interface';
 import { authService } from '@/services/auth.service';
 import { EventBus } from '@/event-bus';
 
-const state = { token: localStorage.getItem('auth-token') || '', status: '' };
-
-const getters = {
-  isAuthenticated: (authState: any) => !!authState.token,
-  authStatus: (authState: any) => authState.status,
-  authToken: (authState: any) => authState.token,
+// initial state
+const state: IAuthState = {
+  token: localStorage.getItem('auth-token') || '',
+  status: '',
 };
 
-const actions = {
-  authRequest: (
-    { commit, dispatch }: { commit: any; dispatch: any },
-    credentials: Credentials,
-  ) => {
+// computed properties for stores, will only re-evaluate when some of its dependencies have changed
+const getters: GetterTree<IAuthState, IRootState> = {
+  isAuthenticated: (authState: IAuthState) => !!authState.token,
+  authStatus: (authState: IAuthState) => authState.status,
+  authToken: (authState: IAuthState) => authState.token,
+};
+
+// can perform asynchronous operations inside an action
+const actions: ActionTree<IAuthState, IRootState> = {
+  authRequest: ({ commit, dispatch }, credentials: ICredentials): any => {
     return new Promise((resolve, reject) => {
       commit('authRequest');
       authService.login(credentials).subscribe(
@@ -33,7 +38,7 @@ const actions = {
       );
     });
   },
-  authLogout: ({ commit, dispatch }: { commit: any; dispatch: any }) => {
+  authLogout: ({ commit, dispatch }) => {
     return new Promise((resolve, reject) => {
       commit('authLogout');
       localStorage.removeItem('auth-token');
@@ -42,23 +47,24 @@ const actions = {
   },
 };
 
-const mutations = {
-  authRequest: (authState: any) => {
+// where we perform actual state modifications
+const mutations: MutationTree<IAuthState> = {
+  authRequest: (authState: IAuthState) => {
     authState.status = 'attempting authentication request';
   },
-  authSuccess: (authState: any, authToken: string) => {
+  authSuccess: (authState: IAuthState, authToken: string) => {
     authState.status = 'authentication succeeded';
     authState.token = authToken;
   },
-  authError: (authState: any) => {
+  authError: (authState: IAuthState) => {
     authState.status = 'error';
   },
-  authLogout: (authState: any) => {
+  authLogout: (authState: IAuthState) => {
     authState.token = '';
   },
 };
 
-export default {
+export const auth: Module<IAuthState, IRootState> = {
   namespaced: true,
   state,
   getters,

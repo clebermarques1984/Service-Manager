@@ -1,15 +1,22 @@
+import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
+import { IUserState, IRootState } from '../types';
 import { profileService } from '@/services/profile.service';
 import { EventBus } from '@/event-bus';
 import Vue from 'vue';
+import { IUserRegistration } from '@/models/user.registration.interface';
+import { accountService } from '@/services/account.service';
 
-const state = { profile: {}, status: '' };
-
-const getters = {
-  profile: (userState: any) => userState.profile,
+const state: IUserState = {
+  profile: {},
+  status: '',
 };
 
-const actions = {
-  userRequest: ({ commit, dispatch }: { commit: any; dispatch: any }) => {
+const getters: GetterTree<IUserState, IRootState> = {
+  profile: (userState: IUserState) => userState.profile,
+};
+
+const actions: ActionTree<IUserState, IRootState> = {
+  userRequest: ({ commit, dispatch }) => {
     commit('userRequest');
     profileService.get().subscribe(
       (result: any) => {
@@ -23,20 +30,23 @@ const actions = {
   },
 };
 
-const mutations = {
-  userRequest: (userState: any) => {
+const mutations: MutationTree<IUserState> = {
+  userRegister: (userState: IUserState) => {
+    userState.status = 'user registration success';
+  },
+  userRequest: (userState: IUserState) => {
     userState.status = 'attempting request for user profile data';
   },
-  userSuccess: (userState: any, userResp: any) => {
+  userSuccess: (userState: IUserState, userResp: any) => {
     userState.status = 'success';
     Vue.set(userState, 'profile', userResp);
   },
-  userError: (userState: any) => {
+  userError: (userState: IUserState) => {
     userState.status = 'error';
   },
 };
 
-export default {
+export const user: Module<IUserState, IRootState> = {
   namespaced: true,
   state,
   getters,

@@ -38,8 +38,11 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 import Spinner from '@/components/Spinner.vue'; // @ is an alias to /src
-import { Credentials } from '@/models/credentials.interface';
+import { ICredentials } from '@/models/credentials.interface';
+
+const namespace: string = 'auth';
 
 @Component({
   components: {
@@ -49,7 +52,7 @@ import { Credentials } from '@/models/credentials.interface';
 export default class LoginForm extends Vue {
   private isBusy: boolean = false;
   private errors: string = '';
-  private credentials = {} as Credentials;
+  private credentials = {} as ICredentials;
 
   private created() {
     if (this.$route.query.new) {
@@ -57,10 +60,14 @@ export default class LoginForm extends Vue {
     }
   }
 
+  @Action('authRequest', { namespace })
+  private authRequest(credentials: ICredentials): Promise<any> {
+    return this.authRequest(credentials);
+  }
+
   private handleSubmit() {
     this.isBusy = true;
-    this.$store
-      .dispatch('auth/authRequest', this.credentials)
+    this.authRequest(this.credentials)
       .then(result => {
         this.$router.push('/');
       })
