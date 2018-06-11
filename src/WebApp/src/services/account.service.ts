@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IUserRegistration } from '@/models/user.registration.interface';
+import IUserRegistration from '@/models/user.registration';
 import { BaseService } from './base.service';
 import { Observable } from 'rxjs/Rx';
 

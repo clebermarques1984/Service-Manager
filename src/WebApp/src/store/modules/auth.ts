@@ -1,9 +1,9 @@
 import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
 import { IAuthState, IRootState } from '../types';
-import { ICredentials } from '@/models/credentials.interface';
+import ICredentials from '@/models/credentials';
 import { authService } from '@/services/auth.service';
 import { EventBus } from '@/event-bus';
-import { IAuth } from '@/models/auth';
+import IAuth from '@/models/auth';
 import router from '@/router';
 
 const TOKEN: string = 'auth_token';
@@ -53,19 +53,7 @@ const actions: ActionTree<IAuthState, IRootState> = {
       );
     });
   },
-  authLogout: ({ commit }) => {
-    return new Promise((resolve, reject) => {
-      commit('authLogout');
-      resolve();
-    });
-  },
-  setLogoutTimer: ({ dispatch }, expiresIn: number) => {
-    setTimeout(() => {
-       dispatch('authLogout');
-       router.replace('/login');
-     }, expiresIn);
-  },
-  tryAuthRequest: ({ commit }) => {
+  tryAutoLogin: ({ commit }) => {
     const authId = localStorage.getItem(AUTHID);
     const authToken = localStorage.getItem(TOKEN);
     const expiresIn = localStorage.getItem(EXPIRES);
@@ -75,8 +63,20 @@ const actions: ActionTree<IAuthState, IRootState> = {
         auth_token: authToken,
         expires_in: Number.parseInt(expiresIn),
       };
-      commit('authRefresh', token);
+      commit('tryAutoLogin', token);
     }
+  },
+  authLogout: ({ commit }) => {
+    return new Promise((resolve, reject) => {
+      commit('authLogout');
+      resolve();
+    });
+  },
+  setLogoutTimer: ({ dispatch }, expiresIn: number) => {
+    setTimeout(() => {
+      dispatch('authLogout');
+      router.replace('/login');
+    }, expiresIn);
   },
 };
 
@@ -93,8 +93,7 @@ const mutations: MutationTree<IAuthState> = {
     authState.expiresIn = token.expires_in.toString();
     authState.status = 'authentication succeeded';
   },
-  authRefresh: (authState: IAuthState, token: IAuth) => {
-    console.log(token);
+  tryAutoLogin: (authState: IAuthState, token: IAuth) => {
     authState.token = token.auth_token;
     authState.expiresIn = token.expires_in.toString();
     authState.status = 'authentication succeeded';

@@ -1,3 +1,5 @@
+import IProfile from '@/models/profile';
+
 export interface IRootState {
   version: string;
 }
@@ -9,6 +11,6 @@ export interface IAuthState {
 }
 
 export interface IUserState {
-  profile: any;
+  profile: IProfile | null;
   status: string;
 }
