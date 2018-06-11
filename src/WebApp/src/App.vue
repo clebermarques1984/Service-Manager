@@ -12,12 +12,11 @@ const namespace: string = 'auth';
 
 @Component
 export default class App extends Vue {
-  @Action('tryAuthRequest', { namespace })
-  private tryAuthRequest: any;
+  @Action('tryAutoLogin', { namespace })
+  private tryAutoLogin: any;
 
   private created() {
-    console.log('app created');
-    this.tryAuthRequest();
+    this.tryAutoLogin();
   }
 }
 </script>

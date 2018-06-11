@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { ICredentials } from '@/models/credentials.interface';
-import { IAuth } from '@/models/auth';
+import ICredentials from '@/models/credentials';
+import IAuth from '@/models/auth';
 import { BaseService } from './base.service';
 import { Observable } from 'rxjs/Rx';
 

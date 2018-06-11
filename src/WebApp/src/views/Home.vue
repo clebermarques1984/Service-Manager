@@ -21,7 +21,6 @@ export default class Home extends Vue {
   private userRequest: any;
 
   private created() {
-    console.log('home created');
     if (!this.profile) {
       this.userRequest();
     }

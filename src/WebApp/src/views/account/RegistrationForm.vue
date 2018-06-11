@@ -54,9 +54,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 import Spinner from '@/components/Spinner.vue'; // @ is an alias to /src
-import { IUserRegistration } from '@/models/user.registration.interface';
+import IUserRegistration from '@/models/user.registration';
 import { accountService } from '@/services/account.service';
+
+const namespace: string = 'user';
 
 @Component({
   components: {
@@ -68,12 +71,15 @@ export default class RegistrationForm extends Vue {
   private errors: string = '';
   private user = {} as IUserRegistration;
 
+  @Action('userRegister', { namespace })
+  private userRegister(user: IUserRegistration): Promise<any> {
+    return this.userRegister(user);
+  }
+
   private handleSubmit() {
     this.isBusy = true;
-    accountService
-      .register(this.user)
-      .finally(() => (this.isBusy = false))
-      .subscribe((result: any) => {
+    this.userRegister(this.user)
+      .then(() => {
         this.$router.push({
           name: 'loginForm',
           query: {
@@ -82,7 +88,13 @@ export default class RegistrationForm extends Vue {
             email: this.user.email,
           },
         });
-      }, (errors: any) => (this.errors = errors));
+      })
+      .catch(err => {
+        this.errors = err;
+      })
+      .then(() => {
+        this.isBusy = false;
+      });
   }
 }
 </script>

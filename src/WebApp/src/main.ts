@@ -6,12 +6,6 @@ import store from './store/store';
 
 Vue.config.productionTip = false;
 
-new Vue({
-  router,
-  store,
-  render: (h) => h(App),
-}).$mount('#app');
-
 axios.interceptors.request.use(
   (config: any) => {
     const authToken = store.getters['auth/authToken'];
@@ -24,3 +18,9 @@ axios.interceptors.request.use(
     return Promise.reject(err);
   },
 );
+
+new Vue({
+  router,
+  store,
+  render: h => h(App),
+}).$mount('#app');
