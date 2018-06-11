@@ -6,14 +6,20 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from './components/HelloWorld.vue';
+import { Action } from 'vuex-class';
 
-@Component({
-  components: {
-    HelloWorld,
-  },
-})
-export default class App extends Vue {}
+const namespace: string = 'auth';
+
+@Component
+export default class App extends Vue {
+  @Action('tryAuthRequest', { namespace })
+  private tryAuthRequest: any;
+
+  private created() {
+    console.log('app created');
+    this.tryAuthRequest();
+  }
+}
 </script>
 
 <style>

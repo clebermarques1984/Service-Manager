@@ -4,7 +4,7 @@
 
 /src/DataService/CRMLiteAppService/.vs
 
-/src/DataService/CRMLiteAppService/CRMLiteAppService/.vscode
+/src/DataService/CRMLiteAppService/.vscode
 /src/DataService/CRMLiteAppService/bin
 /src/DataService/CRMLiteAppService/obj
 *.suo
