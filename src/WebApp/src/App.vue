@@ -6,9 +6,20 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
+
+const namespace: string = 'auth';
 
 @Component
-export default class App extends Vue {}
+export default class App extends Vue {
+  @Action('tryAuthRequest', { namespace })
+  private tryAuthRequest: any;
+
+  private created() {
+    console.log('app created');
+    this.tryAuthRequest();
+  }
+}
 </script>
 
 <style>

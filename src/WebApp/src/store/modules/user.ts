@@ -1,13 +1,10 @@
 import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
 import { IUserState, IRootState } from '../types';
 import { profileService } from '@/services/profile.service';
-import { EventBus } from '@/event-bus';
 import Vue from 'vue';
-import { IUserRegistration } from '@/models/user.registration.interface';
-import { accountService } from '@/services/account.service';
 
 const state: IUserState = {
-  profile: {},
+  profile: null,
   status: '',
 };
 

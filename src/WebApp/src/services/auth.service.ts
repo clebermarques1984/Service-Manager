@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { ICredentials } from '@/models/credentials.interface';
+import { IAuth } from '@/models/auth';
 import { BaseService } from './base.service';
 import { Observable } from 'rxjs/Rx';
 
@@ -19,15 +20,7 @@ class AuthService extends BaseService {
     return Observable.fromPromise(
       axios.post(`${this.api}/auth/login`, credentials),
     )
-      .map((res: any) => res.data.auth_token)
-      .catch((error: any) => this.handleError(error.response));
-  }
-
-  public facebookLogin(accessToken: string): Observable<any> {
-    return Observable.fromPromise(
-      axios.post(`${this.api}/externalauth/facebook`, { accessToken }),
-    )
-      .map((res: any) => res.data.auth_token)
+      .map((res: any) => res.data)
       .catch((error: any) => this.handleError(error.response));
   }
 }

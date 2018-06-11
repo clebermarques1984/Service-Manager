@@ -39,8 +39,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
-import Spinner from '@/components/Spinner.vue'; // @ is an alias to /src
 import { ICredentials } from '@/models/credentials.interface';
+import Spinner from '@/components/Spinner.vue'; // @ is an alias to /src
 
 const namespace: string = 'auth';
 
