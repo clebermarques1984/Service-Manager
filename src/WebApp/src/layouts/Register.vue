@@ -66,7 +66,7 @@ const namespace: string = 'user';
     Spinner,
   },
 })
-export default class RegistrationForm extends Vue {
+export default class LayoutRegister extends Vue {
   private isBusy: boolean = false;
   private errors: string = '';
   private user = {} as IUserRegistration;

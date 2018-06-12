@@ -24,7 +24,9 @@
               <Spinner v-bind:show="isBusy" />
               <button type="submit">Login</button>
               <div v-if="errors">
-                 {{errors}}
+                <span class="red--text">
+                  {{errors}}
+                </span>
               </div>
             </form>
           </div>
@@ -49,7 +51,7 @@ const namespace: string = 'auth';
     Spinner,
   },
 })
-export default class LoginForm extends Vue {
+export default class LayoutLogin extends Vue {
   private isBusy: boolean = false;
   private errors: string = '';
   private credentials = {} as ICredentials;

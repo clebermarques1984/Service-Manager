@@ -9,3 +9,4 @@
 /src/DataService/CRMLiteAppService/obj
 *.suo
 /.vs
+src/WebApp/yarn.lock

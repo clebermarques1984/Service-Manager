@@ -1,8 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home.vue';
-import LoginForm from './views/account/LoginForm.vue';
-import RegistrationForm from './views/account/RegistrationForm.vue';
+import Home from './pages/Home.vue';
 import store from './store/store';
 
 Vue.use(Router);
@@ -19,17 +17,24 @@ const router = new Router({
     {
       path: '/register',
       name: 'registrationForm',
-      component: RegistrationForm,
+      beforeEnter: (to: any, from: any, next: any) => {
+        store.commit('setLayout', 'layout-register');
+        next();
+      },
     },
     {
       path: '/login',
       name: 'loginForm',
-      component: LoginForm,
+      beforeEnter: (to: any, from: any, next: any) => {
+        store.commit('setLayout', 'layout-login');
+        next();
+      },
     },
   ],
 });
 
 router.beforeEach((to: any, from: any, next: any) => {
+  store.commit('setLayout', 'layout-default');
   if (to.matched.some((record: any) => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
