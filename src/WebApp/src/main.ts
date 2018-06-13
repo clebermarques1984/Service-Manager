@@ -4,6 +4,7 @@ import axios from 'axios';
 import App from './App.vue';
 import router from './router';
 import store from './store/store';
+import 'babel-polyfill';
 import 'vuetify/dist/vuetify.min.css'; // Ensure you are using css-loader
 
 Vue.use(Vuetify);
