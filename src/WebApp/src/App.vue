@@ -7,17 +7,16 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
+
 import LayoutDefault from './layouts/Default.vue';
-import LayoutLogin from './layouts/Login.vue';
-import LayoutRegister from './layouts/Register.vue';
+import LayoutEmpty from './layouts/Empty.vue';
 
 const namespace: string = 'auth';
 
 @Component({
   components: {
     LayoutDefault,
-    LayoutLogin,
-    LayoutRegister,
+    LayoutEmpty,
   },
 })
 export default class App extends Vue {

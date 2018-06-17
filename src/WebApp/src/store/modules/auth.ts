@@ -19,7 +19,7 @@ const state: IAuthState = {
 
 // computed properties for stores, will only re-evaluate when some of its dependencies have changed
 const getters: GetterTree<IAuthState, IRootState> = {
-  isAuthenticated: (authState: IAuthState) => {
+  isLoggedIn: (authState: IAuthState) => {
     if (!!authState.token && !!authState.expiresIn) {
       const now = new Date().getTime();
       return now <= Number.parseInt(authState.expiresIn);

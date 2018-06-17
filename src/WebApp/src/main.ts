@@ -1,10 +1,11 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify';
 import axios from 'axios';
-import App from './App.vue';
 import router from './router';
 import store from './store/store';
 import 'babel-polyfill';
+
+import App from './App.vue';
 import 'vuetify/dist/vuetify.min.css'; // Ensure you are using css-loader
 
 Vue.use(Vuetify);

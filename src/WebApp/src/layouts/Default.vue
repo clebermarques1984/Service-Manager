@@ -11,8 +11,6 @@
       <v-toolbar-title>Title</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn flat v-if="!isAuthenticated">Login</v-btn>
-        <v-btn flat v-if="!isAuthenticated">Register</v-btn>
         <v-btn flat v-if="isAuthenticated">Dashboard</v-btn>
       </v-toolbar-items>
     </v-toolbar>
@@ -33,7 +31,7 @@ const namespace: string = 'auth';
 
 @Component
 export default class LayoutDefault extends Vue {
-  @Getter('isAuthenticated', { namespace })
+  @Getter('isLoggedIn', { namespace })
   private isAuthenticated: boolean;
 
   private drawer: boolean = false;
