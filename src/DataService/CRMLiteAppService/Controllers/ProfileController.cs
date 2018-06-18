@@ -36,13 +36,9 @@ namespace CRMLiteAppService.Controllers
             return new OkObjectResult(new
             {
                 Message = "This is secure API and user data!",
-                customer.Identity.FirstName,
-                customer.Identity.LastName,
-                customer.Identity.PictureUrl,
-                customer.Identity.FacebookId,
+                customer.Identity.UserName,
+                customer.Identity.Email,
                 customer.Location,
-                customer.Locale,
-                customer.Gender
             });
         }
     }

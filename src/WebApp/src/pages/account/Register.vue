@@ -3,11 +3,7 @@
       <v-container fluid>
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
-            <v-snackbar
-              :top=true
-              :color="color"
-              :value="errors"
-            >
+            <v-snackbar :top=true :color="color" :value="errors" >
               {{errors}}
               <v-btn dark flat @click.native="errors = ''">Close</v-btn>
             </v-snackbar>
@@ -16,11 +12,7 @@
                 <v-toolbar-title>Register</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-tooltip bottom>
-                  <v-btn
-                    slot="activator"
-                    to="/login"
-                    icon
-                    large>
+                  <v-btn slot="activator" to="/login" icon large>
                     <v-icon large>person</v-icon>
                   </v-btn>
                   <span>Login</span>
@@ -29,26 +21,11 @@
               <v-form @submit.prevent="handleSubmit">
                 <v-card-text>
                     <v-text-field
-                      name="firstName"
-                      label="First Name"
-                      type="text"
-                      autocomplete="given-name"
-                      v-model="user.firstName"
-                      autofocus=""
-                    ></v-text-field>
-                    <v-text-field
-                      name="lastName"
-                      label="Last Name"
-                      type="text"
-                      autocomplete="family-name"
-                      v-model="user.lastName"
-                      autofocus=""
-                    ></v-text-field>
-                    <v-text-field
                       name="email"
                       label="Email"
                       type="text"
-                      autocomplete="username"
+                      autocomplete="email"
+                      autofocus=""
                       v-model="user.email"
                     ></v-text-field>
                     <v-text-field
@@ -113,10 +90,9 @@ export default class Register extends Vue {
       .then(() => {
         this.$router.push({
           name: 'loginForm',
-          params: {
+          query: {
             new: 'tue',
-            firstName: this.user.firstName,
-            email: this.user.email,
+            userName: this.user.email,
           },
         });
       })

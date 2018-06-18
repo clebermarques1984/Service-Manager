@@ -3,11 +3,7 @@
       <v-container fluid>
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
-            <v-snackbar
-              :top=true
-              :color="status"
-              :value="message"
-              >
+            <v-snackbar :top=true :color="status" :value="message" >
               {{message}}
               <v-btn dark flat @click.native="message = ''">Close</v-btn>
             </v-snackbar>
@@ -26,7 +22,7 @@
                   <span>Register</span>
                 </v-tooltip>
               </v-toolbar>
-              <v-form @submit.native.prevent="handleSubmit">
+              <v-form @submit.prevent="handleSubmit">
                 <v-card-text>
                     <v-text-field
                       prepend-icon="person"
@@ -84,7 +80,7 @@ export default class Login extends Vue {
   private created() {
     this.redirect = this.$route.query.redirect || '';
     if (this.$route.query.new) {
-      this.credentials.userName = this.$route.params.email;
+      this.credentials.userName = this.$route.query.userName;
       this.message =
         'User registration success! Login with your password to continue';
     }
