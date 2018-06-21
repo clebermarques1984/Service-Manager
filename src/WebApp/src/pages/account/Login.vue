@@ -42,7 +42,6 @@
                       autocomplete="current-password"
                       v-model="credentials.password"
                     ></v-text-field>
-                    <Spinner :show="isBusy" />
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
@@ -59,19 +58,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
+import NProgress from 'nprogress';
 import ICredentials from '@/models/credentials';
-import Spinner from '@/components/Spinner.vue'; // @ is an alias to /src
 
 const namespace: string = 'auth';
 
-@Component({
-  components: {
-    Spinner,
-  },
-})
+@Component
 export default class Login extends Vue {
   private message: string = '';
-  private isBusy: boolean = false;
   private redirect: string = '';
   private status: string = 'success';
   private credentials = {} as ICredentials;
@@ -93,7 +87,7 @@ export default class Login extends Vue {
 
   private handleSubmit() {
     this.message = '';
-    this.isBusy = true;
+    NProgress.start();
     this.authRequest(this.credentials)
       .then(result => {
         if (!this.redirect) {
@@ -106,7 +100,7 @@ export default class Login extends Vue {
         this.message = err;
       })
       .then(() => {
-        this.isBusy = false;
+        NProgress.done();
       });
   }
 }

@@ -43,7 +43,6 @@
                       autocomplete="country-name"
                       v-model="user.location"
                     ></v-text-field>
-                  <Spinner v-bind:show="isBusy" />
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
@@ -60,19 +59,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
-import Spinner from '@/components/Spinner.vue'; // @ is an alias to /src
+import NProgress from 'nprogress';
 import IUserRegistration from '@/models/user.registration';
 import { accountService } from '@/services/account.service';
 
 const namespace: string = 'user';
 
-@Component({
-  components: {
-    Spinner,
-  },
-})
+@Component
 export default class Register extends Vue {
-  private isBusy: boolean = false;
   private errors: string = '';
   private user = {} as IUserRegistration;
   private color: string = 'error';
@@ -85,7 +79,7 @@ export default class Register extends Vue {
 
   private handleSubmit() {
     this.errors = '';
-    this.isBusy = true;
+    NProgress.start();
     this.userRegister(this.user)
       .then(() => {
         this.$router.push({
@@ -100,7 +94,7 @@ export default class Register extends Vue {
         this.errors = err;
       })
       .then(() => {
-        this.isBusy = false;
+        NProgress.done();
       });
   }
 }

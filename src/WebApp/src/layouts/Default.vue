@@ -2,7 +2,7 @@
   <v-app>
     <v-navigation-drawer v-model="drawer" fixed app >
       <v-list dense>
-        <v-list-tile>
+        <v-list-tile to="/">
           <v-list-tile-action>
             <v-icon>home</v-icon>
           </v-list-tile-action>
@@ -10,7 +10,7 @@
             <v-list-tile-title>Home</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile>
+        <v-list-tile to="/contact">
           <v-list-tile-action>
             <v-icon>contact_mail</v-icon>
           </v-list-tile-action>
@@ -55,8 +55,13 @@ export default class LayoutDefault extends Vue {
   @Getter('profile', { namespace: 'user' })
   private profile: IProfile;
 
+  private goToAbout() {
+    this.$router.push('/about');
+  }
+
   get UserName() {
     return this.profile && this.profile.userName;
   }
 }
 </script>
+
