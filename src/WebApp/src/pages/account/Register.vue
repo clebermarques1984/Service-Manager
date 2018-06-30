@@ -83,7 +83,7 @@ export default class Register extends Vue {
     this.userRegister(this.user)
       .then(() => {
         this.$router.push({
-          name: 'loginForm',
+          name: 'Login',
           query: {
             new: 'tue',
             userName: this.user.email,
