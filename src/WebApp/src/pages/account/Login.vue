@@ -9,7 +9,7 @@
             </v-snackbar>
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
-                <v-toolbar-title>Login</v-toolbar-title>
+                <v-toolbar-title>Login</v-toolbar-title> <!-- Entrar -->
                 <v-spacer></v-spacer>
                 <v-tooltip bottom>
                   <v-btn
@@ -18,19 +18,21 @@
                     icon
                     large>
                     <v-icon large>person_add</v-icon>
+                    <v-icon large>fas fa-angle-right</v-icon>
                   </v-btn>
-                  <span>Register</span>
+                  <span>Register</span> <!-- Criar Conta -->
                 </v-tooltip>
               </v-toolbar>
-              <v-form @submit.prevent="handleSubmit">
+              <v-form @submit.prevent="handleSubmit" ref="form" v-model="valid" lazy-validation>
                 <v-card-text>
                     <v-text-field
                       prepend-icon="person"
-                      name="login"
-                      label="Login"
+                      name="email"
+                      label="E-mail"
                       type="text"
                       autofocus=""
                       autocomplete="username"
+                      :rules="emailRules"
                       v-model="credentials.userName"
                     ></v-text-field>
                     <v-text-field
@@ -40,12 +42,13 @@
                       label="Password"
                       type="password"
                       autocomplete="current-password"
+                      :rules="passwordRules"
                       v-model="credentials.password"
-                    ></v-text-field>
+                    ></v-text-field> <!-- Senha -->
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn type="submit" color="primary">Login</v-btn>
+                  <v-btn  :disabled="!valid" type="submit" color="primary">Login</v-btn> <!-- Entrar -->
                 </v-card-actions>
               </v-form>
             </v-card>
@@ -68,8 +71,15 @@ export default class Login extends Vue {
   private message: string = '';
   private redirect: string = '';
   private status: string = 'success';
+  private valid: boolean = false;
   private credentials = {} as ICredentials;
-  private timeout: number = 6000;
+  private emailRules = [
+    (v: any) => !!v || 'E-mail is required',
+    (v: any) =>
+      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+      'E-mail must be valid',
+  ];
+  private passwordRules = [(v: any) => !!v || 'Password is required'];
 
   private created() {
     this.redirect = this.$route.query.redirect || '';
