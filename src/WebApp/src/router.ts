@@ -29,22 +29,10 @@ const router = new Router({
   routes: [
     route('/', Home),
     route('/contact', Contact),
+    route('/register', Register, false),
+    route('/login', Login, false),
     {
       ...route('*', NotFound, false),
-      beforeEnter: (to, from, next) => {
-        store.commit('setLayout', 'layout-empty');
-        next();
-      },
-    },
-    {
-      ...route('/register', Register, false),
-      beforeEnter: (to, from, next) => {
-        store.commit('setLayout', 'layout-empty');
-        next();
-      },
-    },
-    {
-      ...route('/login', Login, false),
       beforeEnter: (to, from, next) => {
         store.commit('setLayout', 'layout-empty');
         next();

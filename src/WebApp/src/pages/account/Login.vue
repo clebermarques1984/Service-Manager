@@ -9,18 +9,18 @@
             </v-snackbar>
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
-                <v-toolbar-title>Login</v-toolbar-title> <!-- Entrar -->
+                <v-toolbar-title>{{ $t('login') }}</v-toolbar-title> <!-- Login | Entrar -->
                 <v-spacer></v-spacer>
                 <v-tooltip bottom>
                   <v-btn
                     slot="activator"
                     to="/register"
                     icon
+                    color="accent"
                     large>
                     <v-icon large>person_add</v-icon>
-                    <v-icon large>fas fa-angle-right</v-icon>
                   </v-btn>
-                  <span>Register</span> <!-- Criar Conta -->
+                  <span>{{ $t('register') }}</span> <!-- Register | Criar Conta -->
                 </v-tooltip>
               </v-toolbar>
               <v-form @submit.prevent="handleSubmit" ref="form" v-model="valid" lazy-validation>
@@ -28,27 +28,29 @@
                     <v-text-field
                       prepend-icon="person"
                       name="email"
-                      label="E-mail"
+                      :label="$t('email')"
                       type="text"
                       autofocus=""
                       autocomplete="username"
                       :rules="emailRules"
                       v-model="credentials.userName"
-                    ></v-text-field>
+                    ></v-text-field> <!-- E-mail -->
                     <v-text-field
                       id="password"
                       prepend-icon="lock"
                       name="password"
-                      label="Password"
+                      :label="$t('password')"
                       type="password"
                       autocomplete="current-password"
                       :rules="passwordRules"
                       v-model="credentials.password"
-                    ></v-text-field> <!-- Senha -->
+                    ></v-text-field> <!-- Password | Senha -->
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn  :disabled="!valid" type="submit" color="primary">Login</v-btn> <!-- Entrar -->
+                  <v-btn  :disabled="!valid" type="submit" color="primary">
+                    {{ $t('login') }}
+                  </v-btn> <!-- Login | Entrar -->
                 </v-card-actions>
               </v-form>
             </v-card>

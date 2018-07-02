@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" fixed app >
+    <v-navigation-drawer v-if="isAuthenticated">{{UserName}} v-model="drawer" fixed app >
       <v-list dense>
         <v-list-tile to="/">
           <v-list-tile-action>
@@ -21,12 +21,28 @@
       </v-list>
     </v-navigation-drawer>
     <v-toolbar dark color="primary" app dense>
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-side-icon v-if="isAuthenticated">{{UserName}} @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>Title</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn flat v-if="isAuthenticated">{{UserName}}</v-btn>
       </v-toolbar-items>
+      <v-menu :nudge-width="100">
+        <v-toolbar-title slot="activator">
+          <span>{{ $i18n.locale.toUpperCase() }}</span>
+          <v-icon dark>arrow_drop_down</v-icon>
+        </v-toolbar-title>
+
+        <v-list>
+          <v-list-tile
+            v-for="item in locales"
+            :key="item"
+            @click="setLocale(item)"
+            >
+            <v-list-tile-title v-text="item.toUpperCase()"></v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
     </v-toolbar>
     <v-content>
       <v-container fluid>
@@ -48,6 +64,7 @@ const namespace: string = 'auth';
 @Component
 export default class LayoutDefault extends Vue {
   private drawer: boolean | null = null;
+  private locales = ['en', 'pt'];
 
   @Getter('isLoggedIn', { namespace })
   private isAuthenticated: boolean;
@@ -57,6 +74,10 @@ export default class LayoutDefault extends Vue {
 
   private goToAbout() {
     this.$router.push('/about');
+  }
+
+  private setLocale(locale: string) {
+    this.$i18n.locale = locale;
   }
 
   get UserName() {
