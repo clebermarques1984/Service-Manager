@@ -15,32 +15,25 @@ const getters: GetterTree<IUserState, IRootState> = {
 };
 
 const actions: ActionTree<IUserState, IRootState> = {
-  userRequest: ({ commit, dispatch }) => {
+  userRequest: async ({ commit, dispatch }) => {
     commit('userRequest');
-    profileService.get().subscribe(
-      (result: IProfile) => {
-        commit('userSuccess', result);
-      },
-      (errors: any) => {
-        commit('userError');
-        dispatch('auth/authLogout', null, { root: true });
-      },
-    );
+    try {
+      const res = (await profileService.get()) as IProfile;
+      commit('userSuccess', res);
+    } catch (error) {
+      commit('userError');
+      dispatch('auth/authLogout', null, { root: true });
+    }
   },
-  userRegister: ({ commit }, userRegister: IUserRegistration) => {
-    return new Promise((resolve, reject) => {
-      commit('registerRequest');
-      accountService.register(userRegister).subscribe(
-        (result: any) => {
-          commit('registerSuccess');
-          resolve(result);
-        },
-        (errors: any) => {
-          commit('userError');
-          reject(errors);
-        },
-      );
-    });
+  userRegister: async ({ commit }, userRegister: IUserRegistration) => {
+    try {
+      const res = await accountService.register(userRegister);
+      commit('registerSuccess');
+      return res;
+    } catch (error) {
+      commit('userError');
+      throw error;
+    }
   },
 };
 

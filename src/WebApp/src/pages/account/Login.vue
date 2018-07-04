@@ -97,23 +97,20 @@ export default class Login extends Vue {
     return this.authRequest(credentials);
   }
 
-  private handleSubmit() {
+  private async handleSubmit() {
     this.message = '';
     NProgress.start();
-    this.authRequest(this.credentials)
-      .then(result => {
-        if (!this.redirect) {
-          this.redirect = '/';
-        }
-        this.$router.push(this.redirect);
-      })
-      .catch(err => {
-        this.status = 'error';
-        this.message = err;
-      })
-      .then(() => {
-        NProgress.done();
-      });
+    try {
+      const response = await this.authRequest(this.credentials);
+      if (!this.redirect) {
+        this.redirect = '/';
+      }
+      this.$router.push(this.redirect);
+    } catch (error) {
+      this.status = 'error';
+      this.message = error;
+    }
+    NProgress.done();
   }
 }
 </script>

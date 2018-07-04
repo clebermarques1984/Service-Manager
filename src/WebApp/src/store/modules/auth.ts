@@ -7,70 +7,57 @@ import IAuth from '@/models/auth';
 import router from '@/router';
 
 const TOKEN: string = 'auth_token';
-const EXPIRES: string = 'expires_in';
-const AUTHID: string = 'auth_id';
 
 // initial state
-const state: IAuthState = {
-  token: localStorage.getItem(TOKEN) || '',
-  expiresIn: localStorage.getItem(EXPIRES) || '',
-  status: '',
-};
+const state: IAuthState = (() => {
+  const local: IAuth = JSON.parse(localStorage.getItem(TOKEN) || 'null');
+  return {
+    auth_token: local && local.auth_token,
+    expires_in: local && local.expires_in,
+    status: '',
+  };
+})(); // JSON.parse(localStorage.getItem(TOKEN) || 'null');
 
 // computed properties for stores, will only re-evaluate when some of its dependencies have changed
 const getters: GetterTree<IAuthState, IRootState> = {
   isLoggedIn: (authState: IAuthState) => {
-    if (!!authState.token && !!authState.expiresIn) {
+    if (!!authState.auth_token && !!authState.expires_in) {
       const now = new Date().getTime();
-      return now <= Number.parseInt(authState.expiresIn);
+      return now <= authState.expires_in;
     }
     return false;
   },
   authStatus: (authState: IAuthState) => authState.status,
-  authToken: (authState: IAuthState) => authState.token,
+  authToken: (authState: IAuthState) => authState.auth_token,
 };
 
 // can perform asynchronous operations inside an action
 const actions: ActionTree<IAuthState, IRootState> = {
-  authRequest: ({ commit, dispatch }, credentials: ICredentials): any => {
-    return new Promise((resolve, reject) => {
-      commit('authRequest');
-      authService.login(credentials).subscribe(
-        (result: IAuth) => {
-          const expiresIn = result.expires_in;
-          result.expires_in = new Date().getTime() + result.expires_in;
-          commit('authSuccess', result);
-          EventBus.$emit('logged-in', null);
-          dispatch('user/userRequest', null, { root: true });
-          dispatch('setLogoutTimer', expiresIn);
-          resolve(result);
-        },
-        (errors: any) => {
-          commit('authError', errors);
-          dispatch('authLogout');
-          reject(errors);
-        },
-      );
-    });
+  authRequest: async ({ commit, dispatch }, credentials: ICredentials) => {
+    try {
+      const res = (await authService.login(credentials)) as IAuth;
+      const expiresIn = res.expires_in;
+      res.expires_in = new Date().getTime() + res.expires_in;
+      commit('authSuccess', res);
+      EventBus.$emit('logged-in', null);
+      dispatch('user/userRequest', null, { root: true });
+      dispatch('setLogoutTimer', expiresIn);
+      return res;
+    } catch (error) {
+      commit('authError', error);
+      dispatch('authLogout');
+      throw error;
+    }
   },
   tryAutoLogin: ({ commit }) => {
-    const authId = localStorage.getItem(AUTHID);
     const authToken = localStorage.getItem(TOKEN);
-    const expiresIn = localStorage.getItem(EXPIRES);
-    if (!!authToken && !!expiresIn) {
-      const token: IAuth = {
-        id: authId || '',
-        auth_token: authToken,
-        expires_in: Number.parseInt(expiresIn),
-      };
+    if (!!authToken) {
+      const token: IAuth = JSON.parse(authToken);
       commit('tryAutoLogin', token);
     }
   },
   authLogout: ({ commit }) => {
-    return new Promise((resolve, reject) => {
-      commit('authLogout');
-      resolve();
-    });
+    commit('authLogout');
   },
   setLogoutTimer: ({ dispatch }, expiresIn: number) => {
     setTimeout(() => {
@@ -86,27 +73,23 @@ const mutations: MutationTree<IAuthState> = {
     authState.status = 'attempting authentication request';
   },
   authSuccess: (authState: IAuthState, token: IAuth) => {
-    localStorage.setItem(AUTHID, token.id);
-    localStorage.setItem(TOKEN, token.auth_token); // stash the auth token in localStorage
-    localStorage.setItem(EXPIRES, token.expires_in.toString()); // stash the expires_in in localStorage
-    authState.token = token.auth_token;
-    authState.expiresIn = token.expires_in.toString();
+    localStorage.setItem(TOKEN, JSON.stringify(token)); // stash the token in localStorage
+    authState.auth_token = token.auth_token;
+    authState.expires_in = token.expires_in;
     authState.status = 'authentication succeeded';
   },
   tryAutoLogin: (authState: IAuthState, token: IAuth) => {
-    authState.token = token.auth_token;
-    authState.expiresIn = token.expires_in.toString();
+    authState.auth_token = token.auth_token;
+    authState.expires_in = token.expires_in;
     authState.status = 'authentication succeeded';
   },
   authError: (authState: IAuthState) => {
     authState.status = 'error';
   },
   authLogout: (authState: IAuthState) => {
-    localStorage.removeItem(AUTHID);
     localStorage.removeItem(TOKEN);
-    localStorage.removeItem(EXPIRES);
-    authState.token = '';
-    authState.expiresIn = '';
+    authState.auth_token = '';
+    authState.expires_in = 0;
   },
 };
 

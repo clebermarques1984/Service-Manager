@@ -6,8 +6,8 @@ export interface IRootState {
 }
 
 export interface IAuthState {
-  token: string;
-  expiresIn: string;
+  auth_token: string;
+  expires_in: number;
   status: string;
 }
 

@@ -1,8 +1,6 @@
 import axios from 'axios';
 import ICredentials from '@/models/credentials';
-import IAuth from '@/models/auth';
 import { BaseService } from './base.service';
-import { Observable } from 'rxjs/Rx';
 
 class AuthService extends BaseService {
   private static instance: AuthService;
@@ -16,12 +14,10 @@ class AuthService extends BaseService {
     return this.instance || (this.instance = new this());
   }
 
-  public login(credentials: ICredentials): Observable<any> {
-    return Observable.fromPromise(
+  public async login(credentials: ICredentials) {
+    return await this.tryRequest(
       axios.post(`${this.api}/auth/login`, credentials),
-    )
-      .map((res: any) => res.data)
-      .catch((error: any) => this.handleError(error.response));
+    );
   }
 }
 

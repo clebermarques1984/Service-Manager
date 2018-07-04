@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-if="isAuthenticated">{{UserName}} v-model="drawer" fixed app >
+    <v-navigation-drawer v-if="isAuthenticated" v-model="drawer" fixed app >
       <v-list dense>
         <v-list-tile to="/">
           <v-list-tile-action>
@@ -21,7 +21,7 @@
       </v-list>
     </v-navigation-drawer>
     <v-toolbar dark color="primary" app dense>
-      <v-toolbar-side-icon v-if="isAuthenticated">{{UserName}} @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-side-icon v-if="isAuthenticated" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>Title</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
@@ -32,7 +32,6 @@
           <span>{{ $i18n.locale.toUpperCase() }}</span>
           <v-icon dark>arrow_drop_down</v-icon>
         </v-toolbar-title>
-
         <v-list>
           <v-list-tile
             v-for="item in locales"

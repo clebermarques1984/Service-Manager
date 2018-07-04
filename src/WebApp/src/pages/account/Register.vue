@@ -70,32 +70,25 @@ export default class Register extends Vue {
   private errors: string = '';
   private user = {} as IUserRegistration;
   private color: string = 'error';
-  private timeout: number = 6000;
 
   @Action('userRegister', { namespace })
   private userRegister(user: IUserRegistration): Promise<any> {
     return this.userRegister(user);
   }
 
-  private handleSubmit() {
+  private async handleSubmit() {
     this.errors = '';
     NProgress.start();
-    this.userRegister(this.user)
-      .then(() => {
-        this.$router.push({
-          name: 'Login',
-          query: {
-            new: 'tue',
-            userName: this.user.email,
-          },
-        });
-      })
-      .catch(err => {
-        this.errors = err;
-      })
-      .then(() => {
-        NProgress.done();
+    try {
+      const response = await this.userRegister(this.user);
+      this.$router.push({
+        name: 'Login',
+        query: { new: 'tue', userName: this.user.email },
       });
+    } catch (error) {
+      this.errors = error;
+    }
+    NProgress.done();
   }
 }
 </script>

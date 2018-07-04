@@ -13,8 +13,8 @@ class DashboardService extends BaseService {
     return this.instance || (this.instance = new this());
   }
 
-  public getHomeDetails(): Promise<any> {
-    return axios.get(`${this.api}/dashboard/home`);
+  public async getHomeDetails() {
+    return await this.tryRequest(axios.get(`${this.api}/dashboard/home`));
   }
 }
 
