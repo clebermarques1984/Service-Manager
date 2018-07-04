@@ -9,20 +9,20 @@
             </v-snackbar>
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
-                <v-toolbar-title>Register</v-toolbar-title>
+                <v-toolbar-title>{{ $t('register') }}</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-tooltip bottom>
                   <v-btn slot="activator" to="/login" icon large>
                     <v-icon large>person</v-icon>
                   </v-btn>
-                  <span>Login</span>
+                  <span>{{ $t('login') }}</span>
                 </v-tooltip>
               </v-toolbar>
               <v-form @submit.prevent="handleSubmit">
                 <v-card-text>
                     <v-text-field
                       name="email"
-                      label="Email"
+                      :label="$t('email')"
                       type="text"
                       autocomplete="email"
                       autofocus=""
@@ -31,7 +31,7 @@
                     <v-text-field
                       id="password"
                       name="password"
-                      label="Password"
+                      :label="$t('password')"
                       type="password"
                       autocomplete="current-password"
                       v-model="user.password"
@@ -46,7 +46,7 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn type="submit" color="primary">Register</v-btn>
+                  <v-btn type="submit" color="primary">{{ $t('register') }}</v-btn>
                 </v-card-actions>
               </v-form>
             </v-card>
@@ -61,7 +61,6 @@ import { Component, Vue } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import NProgress from 'nprogress';
 import IUserRegistration from '@/models/user.registration';
-import { accountService } from '@/services/account.service';
 
 const namespace: string = 'user';
 

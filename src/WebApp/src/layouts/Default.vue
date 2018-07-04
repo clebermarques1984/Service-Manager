@@ -34,7 +34,7 @@
         </v-toolbar-title>
         <v-list>
           <v-list-tile
-            v-for="item in locales"
+            v-for="item in Locales"
             :key="item"
             @click="setLocale(item)"
             >
@@ -63,7 +63,6 @@ const namespace: string = 'auth';
 @Component
 export default class LayoutDefault extends Vue {
   private drawer: boolean | null = null;
-  private locales = ['en', 'pt'];
 
   @Getter('isLoggedIn', { namespace })
   private isAuthenticated: boolean;
@@ -77,6 +76,10 @@ export default class LayoutDefault extends Vue {
 
   private setLocale(locale: string) {
     this.$i18n.locale = locale;
+  }
+
+  get Locales(): string[] {
+    return Object.keys(this.$i18n.messages);
   }
 
   get UserName() {
