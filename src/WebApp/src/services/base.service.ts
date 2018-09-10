@@ -1,13 +1,22 @@
-import { Observable } from 'rxjs/Rx';
+import { AxiosPromise } from 'axios';
 
 export abstract class BaseService {
   protected readonly api = 'http://localhost:5000/api';
 
+  public async tryRequest(req: AxiosPromise<any>) {
+    try {
+      const res = await req;
+      return res.data;
+    } catch (error) {
+      this.handleError(error.response);
+    }
+  }
+
   protected handleError(error: any) {
-    const applicationError = (error && error.headers['Application-Error']);
+    const applicationError = error && error.headers['Application-Error'];
 
     if (applicationError) {
-      return Observable.throw(applicationError);
+      throw applicationError;
     }
 
     let modelStateErrors: any = '';
@@ -21,6 +30,6 @@ export abstract class BaseService {
     }
 
     modelStateErrors = modelStateErrors = '' ? null : modelStateErrors;
-    return Observable.throw(modelStateErrors || 'Server error');
+    throw modelStateErrors || 'Server error';
   }
 }

@@ -1,17 +1,26 @@
 <template>
-  <div id="app">
-    <router-view/>
-  </div>
+  <v-app>
+    <component v-bind:is="layout"></component>
+  </v-app>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Action } from 'vuex-class';
+import { Action, Getter } from 'vuex-class';
+
+import LayoutDefault from './layouts/Default.vue';
+import LayoutEmpty from './layouts/Empty.vue';
 
 const namespace: string = 'auth';
 
-@Component
+@Component({
+  components: {
+    LayoutDefault,
+    LayoutEmpty,
+  },
+})
 export default class App extends Vue {
+  @Getter('layout') private layout: string;
   @Action('tryAutoLogin', { namespace })
   private tryAutoLogin: any;
 
@@ -22,12 +31,8 @@ export default class App extends Vue {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+#nprogress .bar {
+  background: white;
 }
 </style>
+

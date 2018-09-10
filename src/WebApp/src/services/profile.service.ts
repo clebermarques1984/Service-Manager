@@ -1,7 +1,5 @@
 import axios from 'axios';
-import { Observable } from 'rxjs/Rx';
 import { BaseService } from './base.service';
-import IProfile from '@/models/profile';
 
 class ProfileService extends BaseService {
   private static instance: ProfileService;
@@ -15,10 +13,8 @@ class ProfileService extends BaseService {
     return this.instance || (this.instance = new this());
   }
 
-  public get(): Observable<any> {
-    return Observable.fromPromise(axios.get(`${this.api}/profile/me`))
-      .map((res: any) => res.data as IProfile)
-      .catch((error: any) => this.handleError(error.response));
+  public async get() {
+    return await this.tryRequest(axios.get(`${this.api}/profile/me`));
   }
 }
 

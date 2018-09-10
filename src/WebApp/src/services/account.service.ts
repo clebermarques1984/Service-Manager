@@ -1,7 +1,6 @@
 import axios from 'axios';
 import IUserRegistration from '@/models/user.registration';
 import { BaseService } from './base.service';
-import { Observable } from 'rxjs/Rx';
 
 class AccountService extends BaseService {
   private static instance: AccountService;
@@ -15,12 +14,10 @@ class AccountService extends BaseService {
     return this.instance || (this.instance = new this());
   }
 
-  public register(userRegistration: IUserRegistration): Observable<any> {
-    return Observable.fromPromise(
+  public async register(userRegistration: IUserRegistration) {
+    return await this.tryRequest(
       axios.post(`${this.api}/accounts`, userRegistration),
-    )
-      .map((res: any) => true)
-      .catch((error: any) => this.handleError(error.response));
+    );
   }
 }
 

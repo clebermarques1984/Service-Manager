@@ -2,19 +2,20 @@ import axios from 'axios';
 import { BaseService } from './base.service';
 
 class DashboardService extends BaseService {
+  private static instance: DashboardService;
 
-    private static instance: DashboardService;
+  private constructor() {
+    super();
+  }
 
-    private constructor() {  super(); }
+  public static get Instance() {
+    // Do you need arguments? Make it a regular method instead.
+    return this.instance || (this.instance = new this());
+  }
 
-    public static get Instance() {
-       // Do you need arguments? Make it a regular method instead.
-       return this.instance || (this.instance = new this());
-    }
-
-    public getHomeDetails(): Promise<any> {
-        return axios.get(`${this.api}/dashboard/home`);
-    }
+  public async getHomeDetails() {
+    return await this.tryRequest(axios.get(`${this.api}/dashboard/home`));
+  }
 }
 
 // export a singleton instance in the global namespace

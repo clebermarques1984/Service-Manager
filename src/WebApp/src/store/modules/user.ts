@@ -1,10 +1,9 @@
 import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
-import { IUserState, IRootState } from '../types';
+import { IUserState, IRootState } from '@/store/types';
 import { profileService } from '@/services/profile.service';
 import { accountService } from '@/services/account.service';
 import IUserRegistration from '@/models/user.registration';
 import IProfile from '@/models/profile';
-import Vue from 'vue';
 
 const state: IUserState = {
   profile: null,
@@ -16,39 +15,29 @@ const getters: GetterTree<IUserState, IRootState> = {
 };
 
 const actions: ActionTree<IUserState, IRootState> = {
-  userRequest: ({ commit, dispatch }) => {
+  userRequest: async ({ commit, dispatch }) => {
     commit('userRequest');
-    profileService.get().subscribe(
-      (result: IProfile) => {
-        commit('userSuccess', result);
-      },
-      (errors: any) => {
-        commit('userError');
-        dispatch('auth/authLogout', null, { root: true });
-      },
-    );
+    try {
+      const res = (await profileService.get()) as IProfile;
+      commit('userSuccess', res);
+    } catch (error) {
+      commit('userError');
+      dispatch('auth/authLogout', null, { root: true });
+    }
   },
-  userRegister: ({ commit }, userRegister: IUserRegistration) => {
-    return new Promise((resolve, reject) => {
-      commit('userRequest');
-      accountService.register(userRegister).subscribe(
-        (result: any) => {
-          commit('userRegister');
-          resolve(result);
-        },
-        (errors: any) => {
-          commit('userError');
-          reject(errors);
-        },
-      );
-    });
+  userRegister: async ({ commit }, userRegister: IUserRegistration) => {
+    try {
+      const res = await accountService.register(userRegister);
+      commit('registerSuccess');
+      return res;
+    } catch (error) {
+      commit('userError');
+      throw error;
+    }
   },
 };
 
 const mutations: MutationTree<IUserState> = {
-  userRegister: (userState: IUserState) => {
-    userState.status = 'user registration success';
-  },
   userRequest: (userState: IUserState) => {
     userState.status = 'attempting request for user profile data';
   },
@@ -58,6 +47,12 @@ const mutations: MutationTree<IUserState> = {
   },
   userError: (userState: IUserState) => {
     userState.status = 'error';
+  },
+  registerRequest: (userState: IUserState) => {
+    userState.status = 'attempting request for user registration';
+  },
+  registerSuccess: (userState: IUserState) => {
+    userState.status = 'user registration success';
   },
 };
 
