@@ -2,7 +2,7 @@
   <v-card>
     <v-card-title>
         <v-toolbar flat color="white">
-          <v-toolbar-title>My CRUD</v-toolbar-title>
+          <v-toolbar-title>{{ $t('customer') }}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-text-field
               v-model="search"
