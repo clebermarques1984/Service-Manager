@@ -4,7 +4,6 @@
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
                 <h1>404 page not found</h1>
-                <blockquote>How did we get here?</blockquote>
                 <router-link to="/">Take me home.</router-link>
           </v-flex>
         </v-layout>  

@@ -29,3 +29,10 @@ export default class App extends Vue {
   }
 }
 </script>
+
+<style>
+#nprogress .bar {
+  background: white;
+}
+</style>
+

@@ -1,24 +1,22 @@
-import Vue, { VueConstructor } from 'vue';
+import Vue from 'vue';
 import Router from 'vue-router';
 import NProgress from 'nprogress';
 import store from './store/store';
 // vue pages
 import Login from './pages/account/Login.vue';
 import Register from './pages/account/Register.vue';
-import Home from './pages/Home.vue';
-import Contact from './pages/Contact.vue';
-import NotFound from './pages/NotFound.vue';
 
 Vue.use(Router);
 
-function route(
+function mapRoute(
   path: string,
-  component: VueConstructor<Vue>,
+  component: any,
+  name: string | undefined,
   requiresAuth: boolean = true,
 ) {
   return {
     path,
-    name: component.name,
+    name,
     component,
     meta: { requiresAuth },
   };
@@ -27,12 +25,17 @@ function route(
 const router = new Router({
   mode: 'history',
   routes: [
-    route('/', Home),
-    route('/contact', Contact),
-    route('/register', Register, false),
-    route('/login', Login, false),
+    mapRoute('/', () => import('./pages/Home.vue'), 'Home'),
+    mapRoute('/contact', () => import('./pages/contact/Index.vue'), 'Contact'),
+    mapRoute(
+      '/customer',
+      () => import('./pages/customer/Index.vue'),
+      'Customer',
+    ),
+    mapRoute('/register', Register, 'Register', false),
+    mapRoute('/login', Login, 'Login', false),
     {
-      ...route('*', NotFound, false),
+      ...mapRoute('*', () => import('@/pages/NotFound.vue'), 'NotFound', false),
       beforeEnter: (to, from, next) => {
         store.commit('setLayout', 'layout-empty');
         next();

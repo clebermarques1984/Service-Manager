@@ -32,7 +32,9 @@
                       type="text"
                       autofocus=""
                       autocomplete="username"
-                      :rules="emailRules"
+                      :rules="[v => !!v || $t('rules.required', {field: $t('email')}), v =>
+      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+      $t('rules.validEmail')]"
                       v-model="credentials.userName"
                     ></v-text-field> <!-- E-mail -->
                     <v-text-field
@@ -42,13 +44,13 @@
                       :label="$t('password')"
                       type="password"
                       autocomplete="current-password"
-                      :rules="passwordRules"
+                      :rules="[v => !!v || $t('rules.required', {field: $t('password')})]"
                       v-model="credentials.password"
                     ></v-text-field> <!-- Password | Senha -->
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn  :disabled="!valid" type="submit" color="primary">
+                  <v-btn :disabled="!valid" type="submit" color="primary">
                     {{ $t('login') }}
                   </v-btn> <!-- Login | Entrar -->
                 </v-card-actions>
@@ -75,20 +77,12 @@ export default class Login extends Vue {
   private status: string = 'success';
   private valid: boolean = false;
   private credentials = {} as ICredentials;
-  private emailRules = [
-    (v: any) => !!v || 'E-mail is required',
-    (v: any) =>
-      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
-      'E-mail must be valid',
-  ];
-  private passwordRules = [(v: any) => !!v || 'Password is required'];
 
   private created() {
     this.redirect = this.$route.query.redirect || '';
     if (this.$route.query.new) {
       this.credentials.userName = this.$route.query.userName;
-      this.message =
-        'User registration success! Login with your password to continue';
+      this.message = this.$t('userRegistrationMsg') as string;
     }
   }
 

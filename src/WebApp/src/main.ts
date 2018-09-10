@@ -2,8 +2,7 @@ import Vue from 'vue';
 import NProgress from 'nprogress';
 import axios from 'axios';
 import Vuetify from 'vuetify';
-import colors from 'vuetify/es5/util/colors';
-import VueI18n from 'vue-i18n';
+// import colors from 'vuetify/es5/util/colors';
 import i18n from './i18n/locales';
 import router from './router';
 import store from './store/store';
@@ -13,7 +12,7 @@ import App from './App.vue';
 // css imports
 import 'vuetify/dist/vuetify.min.css';
 
-NProgress.configure({ showSpinner: false });
+NProgress.configure({ showSpinner: false, easing: 'ease', speed: 500 });
 
 axios.interceptors.request.use(
   (config: any) => {
@@ -31,11 +30,11 @@ axios.interceptors.request.use(
 Vue.config.productionTip = false;
 
 Vue.use(Vuetify, {
-  theme: {
-    primary: colors.shades.black,
-    secondary: colors.indigo.lighten5,
-    accent: colors.purple.base,
-  },
+  // theme: {
+  //   primary: colors.grey,
+  //   secondary: colors.indigo.lighten5,
+  //   accent: colors.purple.base,
+  // },
 });
 
 new Vue({

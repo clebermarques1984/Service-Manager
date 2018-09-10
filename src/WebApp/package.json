@@ -11,6 +11,7 @@
     "@types/nprogress": "0.0.29",
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
+    "lodash": "^4.17.10",
     "nprogress": "^0.2.0",
     "rxjs": "^6.2.0",
     "rxjs-compat": "^6.2.0",
@@ -24,6 +25,8 @@
     "vuex-class": "^0.3.1"
   },
   "devDependencies": {
+    "@types/node": "^10.5.2",
+    "@types/webpack-env": "^1.13.6",
     "@vue/cli-plugin-babel": "^3.0.0-beta.15",
     "@vue/cli-plugin-typescript": "^3.0.0-beta.15",
     "@vue/cli-service": "^3.0.0-beta.15",

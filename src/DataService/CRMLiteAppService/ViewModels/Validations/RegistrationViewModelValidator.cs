@@ -7,9 +7,11 @@ namespace CRMLiteAppService.ViewModels.Validations
     {
         public RegistrationViewModelValidator()
         {
-            RuleFor(vm => vm.Email).NotEmpty().WithMessage("Email cannot be empty");
-            RuleFor(vm => vm.Password).NotEmpty().WithMessage("Password cannot be empty");
-            RuleFor(vm => vm.Location).NotEmpty().WithMessage("Location cannot be empty");
+            RuleFor(vm => vm.Email).EmailAddress();
+            RuleFor(vm => vm.Email).NotEmpty();
+            RuleFor(vm => vm.Password).NotEmpty();
+			RuleFor(vm => vm.Password).Length(6, 12);
+            RuleFor(vm => vm.ConfirmPassword).Equal(vm => vm.Password).WithMessage("'ConfirmPassword' deve ser igual a 'Password'");
         }
     }
 }
