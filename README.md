@@ -1,2 +1,2 @@
-# CRMLite
-A simple CRM using ASP.NET Core and Vue.js
+# Service-Manager
+A simple Service Manager using ASP.NET Core and Vue.js
