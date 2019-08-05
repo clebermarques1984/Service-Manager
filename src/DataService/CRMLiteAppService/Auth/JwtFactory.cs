@@ -22,7 +22,7 @@ namespace CRMLiteAppService.Auth
 		public async Task<string> GenerateEncodedToken(string userName, ClaimsIdentity identity)
 		{
 			var claims = new[]
-		 {
+		    {
 				 new Claim(JwtRegisteredClaimNames.Sub, userName),
 				 new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
 				 new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
@@ -64,19 +64,13 @@ namespace CRMLiteAppService.Auth
 			if (options == null) throw new ArgumentNullException(nameof(options));
 
 			if (options.ValidFor <= TimeSpan.Zero)
-			{
 				throw new ArgumentException("Must be a non-zero TimeSpan.", nameof(JwtIssuerOptions.ValidFor));
-			}
 
 			if (options.SigningCredentials == null)
-			{
 				throw new ArgumentNullException(nameof(JwtIssuerOptions.SigningCredentials));
-			}
 
 			if (options.JtiGenerator == null)
-			{
 				throw new ArgumentNullException(nameof(JwtIssuerOptions.JtiGenerator));
-			}
 		}
 	}
 }
