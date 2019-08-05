@@ -10,3 +10,4 @@
 *.suo
 /.vs
 src/WebApp/yarn.lock
+src/WebApp/package-lock.json
